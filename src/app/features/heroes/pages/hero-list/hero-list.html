@@ -1,2 +1,3 @@
 <app-hero-search (idChange)="searchId.set($event)" />
+<button mat-flat-button type="button" (click)="openCreateDialog()">Nuevo héroe</button>
 <app-hero-table [heroes]="heroes.value()" />

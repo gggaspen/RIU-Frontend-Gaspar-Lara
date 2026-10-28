@@ -2,12 +2,17 @@ import { HttpErrorResponse, HttpInterceptorFn, HttpResponse } from '@angular/com
 import { inject } from '@angular/core';
 import { of, throwError } from 'rxjs';
 
+import { HeroPayload } from '../models/hero.model';
 import { HEROES_API_URL } from '../services/hero.service';
 import { HeroInMemoryDb } from './hero-in-memory-db';
 
 export const heroApiInterceptor: HttpInterceptorFn = (req, next) => {
   if (req.method === 'GET' && req.url === HEROES_API_URL) {
     return of(new HttpResponse({ status: 200, body: inject(HeroInMemoryDb).findAll() }));
+  }
+  if (req.method === 'POST' && req.url === HEROES_API_URL) {
+    const hero = inject(HeroInMemoryDb).insert(req.body as HeroPayload);
+    return of(new HttpResponse({ status: 201, body: hero }));
   }
   const id = req.method === 'GET' && req.url.startsWith(`${HEROES_API_URL}/`)
       ? Number(req.url.slice(HEROES_API_URL.length + 1))

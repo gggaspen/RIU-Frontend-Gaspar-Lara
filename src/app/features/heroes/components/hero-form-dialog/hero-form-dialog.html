@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>Nuevo héroe</h2>
+<form [formGroup]="form" (ngSubmit)="save()">
+  <mat-dialog-content>
+    <mat-form-field appearance="outline">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="name" />
+      <mat-error>El nombre es obligatorio</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Nombre real</mat-label>
+      <input matInput formControlName="fullName" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Editorial</mat-label>
+      <input matInput formControlName="publisher" />
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" mat-dialog-close>Cancelar</button>
+    <button mat-flat-button type="submit">Guardar</button>
+  </mat-dialog-actions>
+</form>

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { Hero, HeroId } from '../models/hero.model';
+import { Hero, HeroId, HeroPayload } from '../models/hero.model';
 
 export const HEROES_API_URL = '/api/heroes';
 
@@ -16,5 +16,9 @@ export class HeroService {
 
   getById(id: HeroId): Observable<Hero> {
     return this.http.get<Hero>(`${HEROES_API_URL}/${id}`);
+  }
+
+  create(payload: HeroPayload): Observable<Hero> {
+    return this.http.post<Hero>(HEROES_API_URL, payload);
   }
 }
