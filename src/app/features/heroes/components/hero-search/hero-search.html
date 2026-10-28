@@ -1,0 +1,4 @@
+<mat-form-field appearance="outline">
+  <mat-label>Buscra por id</mat-label>
+  <input matInput type="number" min="1" (input)="idChange.emit($any($event.target).value)" />
+</mat-form-field>
