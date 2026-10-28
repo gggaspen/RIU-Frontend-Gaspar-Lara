@@ -1,5 +1,4 @@
 import { Injectable, signal } from '@angular/core';
-
 import { Hero, HeroId } from '../models/hero.model';
 import { HEROES_SEED } from './heroes.seed';
 

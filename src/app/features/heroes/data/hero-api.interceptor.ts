@@ -10,8 +10,8 @@ export const heroApiInterceptor: HttpInterceptorFn = (req, next) => {
     return of(new HttpResponse({ status: 200, body: inject(HeroInMemoryDb).findAll() }));
   }
   const id = req.method === 'GET' && req.url.startsWith(`${HEROES_API_URL}/`)
-    ? Number(req.url.slice(HEROES_API_URL.length + 1))
-    : NaN;
+      ? Number(req.url.slice(HEROES_API_URL.length + 1))
+      : NaN;
   if (!Number.isNaN(id)) {
     const hero = inject(HeroInMemoryDb).findById(id);
     return hero
