@@ -1,0 +1,18 @@
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Nombre real</th>
+      <th>Editorial</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (hero of heroes(); track hero.id) {
+      <tr>
+        <td>{{ hero.name }}</td>
+        <td>{{ hero.biography.fullName }}</td>
+        <td>{{ hero.biography.publisher }}</td>
+      </tr>
+    }
+  </tbody>
+</table>
