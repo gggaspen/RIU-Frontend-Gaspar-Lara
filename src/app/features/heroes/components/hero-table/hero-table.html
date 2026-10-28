@@ -1,18 +1,43 @@
-<table>
-  <thead>
-    <tr>
-      <th>Nombre</th>
-      <th>Nombre real</th>
-      <th>Editorial</th>
-    </tr>
-  </thead>
-  <tbody>
-    @for (hero of heroes(); track hero.id) {
-      <tr>
-        <td>{{ hero.name }}</td>
-        <td>{{ hero.biography.fullName }}</td>
-        <td>{{ hero.biography.publisher }}</td>
-      </tr>
-    }
-  </tbody>
+<table mat-table [dataSource]="heroes()">
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let hero">{{ hero.id }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="image">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let hero">
+      <img [src]="hero.images.xs" [alt]="hero.name" width="48" />
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>Nombre</th>
+    <td mat-cell *matCellDef="let hero">{{ hero.name }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="fullName">
+    <th mat-header-cell *matHeaderCellDef>Nombre real</th>
+    <td mat-cell *matCellDef="let hero">{{ hero.biography.fullName }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="publisher">
+    <th mat-header-cell *matHeaderCellDef>Editorial</th>
+    <td mat-cell *matCellDef="let hero">{{ hero.biography.publisher }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef>Acciones</th>
+    <td mat-cell *matCellDef="let hero">
+      <button mat-icon-button type="button" aria-label="Editar héroe">
+        <mat-icon fontSet="material-symbols-outlined">edit</mat-icon>
+      </button>
+      <button mat-icon-button type="button" aria-label="Eliminar héroe">
+        <mat-icon fontSet="material-symbols-outlined">delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 </table>
