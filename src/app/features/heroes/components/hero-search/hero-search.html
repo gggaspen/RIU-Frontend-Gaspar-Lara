@@ -1,4 +1,4 @@
 <mat-form-field appearance="outline">
-  <mat-label>Buscra por id</mat-label>
-  <input matInput type="number" min="1" (input)="idChange.emit($any($event.target).value)" />
+  <mat-label>Buscar por id o nombre</mat-label>
+  <input matInput type="search" [formControl]="control" />
 </mat-form-field>

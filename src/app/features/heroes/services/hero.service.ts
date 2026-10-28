@@ -18,6 +18,10 @@ export class HeroService {
     return this.http.get<Hero>(`${HEROES_API_URL}/${id}`);
   }
 
+  getByName(name: string): Observable<Hero[]> {
+    return this.http.get<Hero[]>(HEROES_API_URL, { params: { name } });
+  }
+
   create(payload: HeroPayload): Observable<Hero> {
     return this.http.post<Hero>(HEROES_API_URL, payload);
   }

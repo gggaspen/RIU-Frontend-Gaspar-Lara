@@ -8,7 +8,10 @@ import { HeroInMemoryDb } from './hero-in-memory-db';
 
 export const heroApiInterceptor: HttpInterceptorFn = (req, next) => {
   if (req.method === 'GET' && req.url === HEROES_API_URL) {
-    return of(new HttpResponse({ status: 200, body: inject(HeroInMemoryDb).findAll() }));
+    const db = inject(HeroInMemoryDb);
+    const name = req.params.get('name');
+    const body = name === null ? db.findAll() : db.findByName(name);
+    return of(new HttpResponse({ status: 200, body }));
   }
   if (req.method === 'POST' && req.url === HEROES_API_URL) {
     const hero = inject(HeroInMemoryDb).insert(req.body as HeroPayload);

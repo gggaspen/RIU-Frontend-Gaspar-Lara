@@ -2,6 +2,9 @@ import { Injectable, signal } from '@angular/core';
 import { Hero, HeroId, HeroPayload } from '../models/hero.model';
 import { HEROES_SEED } from './heroes.seed';
 
+const normalize = (text: string): string =>
+  text.trim().toLowerCase().normalize('NFD').replace(/\p{M}/gu, '');
+
 @Injectable({ providedIn: 'root' })
 export class HeroInMemoryDb {
   private readonly heroes = signal<readonly Hero[]>(HEROES_SEED);
@@ -14,6 +17,16 @@ export class HeroInMemoryDb {
   findById(id: HeroId): Hero | undefined {
     const hero = this.heroes().find((h) => h.id === id);
     return hero && { ...hero };
+  }
+
+  findByName(term: string): Hero[] {
+    const normalizedTerm = normalize(term);
+    if (!normalizedTerm) {
+      return this.findAll();
+    }
+    return this.heroes()
+      .filter(({ name }) => normalize(name).includes(normalizedTerm))
+      .map((hero) => ({ ...hero }));
   }
 
   insert(payload: HeroPayload): Hero {

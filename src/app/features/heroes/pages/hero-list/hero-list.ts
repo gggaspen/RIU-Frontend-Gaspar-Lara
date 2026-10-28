@@ -19,16 +19,16 @@ export class HeroListPage {
   private readonly heroService = inject(HeroService);
   private readonly dialog = inject(MatDialog);
 
-  protected readonly searchId = signal('');
+  protected readonly searchTerm = signal('');
   protected readonly heroes = rxResource({
-    params: () => this.searchId(),
-    stream: ({ params: id }) =>
-      id === ''
-        ? this.heroService.getAll()
-        : this.heroService.getById(Number(id)).pipe(
+    params: () => this.searchTerm(),
+    stream: ({ params: term }) =>
+      /^\d+$/.test(term)
+        ? this.heroService.getById(Number(term)).pipe(
             map((hero) => [hero]),
             catchError(() => of([])),
-          ),
+          )
+        : this.heroService.getByName(term),
     defaultValue: [],
   });
 
