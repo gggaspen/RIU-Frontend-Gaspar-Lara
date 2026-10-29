@@ -12,6 +12,7 @@ import { Hero } from '../../models/hero.model';
 })
 export class HeroTable {
   readonly heroes = input.required<Hero[]>();
+  readonly edit = output<Hero>();
   readonly remove = output<Hero>();
   protected readonly displayedColumns = ['image', 'name', 'fullName', 'publisher', 'actions'];
 }

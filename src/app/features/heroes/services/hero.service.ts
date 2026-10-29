@@ -26,6 +26,10 @@ export class HeroService {
     return this.http.post<Hero>(HEROES_API_URL, payload);
   }
 
+  update(id: HeroId, payload: HeroPayload): Observable<Hero> {
+    return this.http.put<Hero>(`${HEROES_API_URL}/${id}`, payload);
+  }
+
   delete(id: HeroId): Observable<void> {
     return this.http.delete<void>(`${HEROES_API_URL}/${id}`);
   }

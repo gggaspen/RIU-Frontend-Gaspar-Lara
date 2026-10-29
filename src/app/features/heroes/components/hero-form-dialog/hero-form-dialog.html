@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Nuevo héroe</h2>
+<h2 mat-dialog-title>{{ hero ? 'Editar héroe' : 'Nuevo héroe' }}</h2>
 <form [formGroup]="form" (ngSubmit)="save()">
   <mat-dialog-content>
     <mat-form-field appearance="outline">

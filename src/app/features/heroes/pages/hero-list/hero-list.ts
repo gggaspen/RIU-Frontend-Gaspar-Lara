@@ -44,6 +44,17 @@ export class HeroListPage {
       .subscribe(() => this.heroes.reload());
   }
 
+  protected openEditDialog(hero: Hero): void {
+    this.dialog
+      .open<HeroFormDialog, Hero, HeroPayload>(HeroFormDialog, { data: hero })
+      .afterClosed()
+      .pipe(
+        filter((payload): payload is HeroPayload => payload !== undefined),
+        switchMap((payload) => this.heroService.update(hero.id, payload)),
+      )
+      .subscribe(() => this.heroes.reload());
+  }
+
   protected openDeleteDialog(hero: Hero): void {
     this.dialog
       .open<HeroDeleteDialog, Hero, boolean>(HeroDeleteDialog, { data: hero })

@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
-import { HeroPayload } from '../../models/hero.model';
+import { Hero, HeroPayload } from '../../models/hero.model';
 
 interface HeroFormValue {
   readonly name: string;
@@ -22,9 +22,9 @@ const slugify = (text: string): string =>
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
 
-const toHeroPayload = ({ name, fullName, publisher }: HeroFormValue): HeroPayload => ({
-  name: name.trim(),
-  slug: slugify(name),
+const emptyHeroPayload: HeroPayload = {
+  name: '',
+  slug: '',
   powerstats: { intelligence: 0, strength: 0, speed: 0, durability: 0, power: 0, combat: 0 },
   appearance: {
     gender: '-',
@@ -35,17 +35,31 @@ const toHeroPayload = ({ name, fullName, publisher }: HeroFormValue): HeroPayloa
     hairColor: '-',
   },
   biography: {
-    fullName: fullName.trim(),
+    fullName: '',
     alterEgos: '-',
     aliases: ['-'],
     placeOfBirth: '-',
     firstAppearance: '-',
-    publisher: publisher.trim() || null,
+    publisher: null,
     alignment: '-',
   },
   work: { occupation: '-', base: '-' },
   connections: { groupAffiliation: '-', relatives: '-' },
   images: { xs: '', sm: '', md: '', lg: '' },
+};
+
+const toHeroPayload = (
+  { name, fullName, publisher }: HeroFormValue,
+  base: HeroPayload = emptyHeroPayload,
+): HeroPayload => ({
+  ...base,
+  name: name.trim(),
+  slug: slugify(name),
+  biography: {
+    ...base.biography,
+    fullName: fullName.trim(),
+    publisher: publisher.trim() || null,
+  },
 });
 
 @Component({
@@ -62,11 +76,12 @@ const toHeroPayload = ({ name, fullName, publisher }: HeroFormValue): HeroPayloa
 })
 export class HeroFormDialog {
   private readonly dialogRef = inject<MatDialogRef<HeroFormDialog, HeroPayload>>(MatDialogRef);
+  protected readonly hero = inject<Hero | null>(MAT_DIALOG_DATA, { optional: true });
 
   protected readonly form = inject(NonNullableFormBuilder).group({
-    name: ['', [Validators.required, Validators.pattern(/\S/)]],
-    fullName: [''],
-    publisher: [''],
+    name: [this.hero?.name ?? '', [Validators.required, Validators.pattern(/\S/)]],
+    fullName: [this.hero?.biography.fullName ?? ''],
+    publisher: [this.hero?.biography.publisher ?? ''],
   });
 
   protected save(): void {
@@ -74,6 +89,7 @@ export class HeroFormDialog {
       this.form.markAllAsTouched();
       return;
     }
-    this.dialogRef.close(toHeroPayload(this.form.getRawValue()));
+    const { id: _id, ...base } = this.hero ?? { id: 0, ...emptyHeroPayload };
+    this.dialogRef.close(toHeroPayload(this.form.getRawValue(), base));
   }
 }

@@ -42,4 +42,13 @@ export class HeroInMemoryDb {
     this.heroes.update((heroes) => heroes.filter((hero) => hero.id !== id));
     return true;
   }
+
+  update(id: HeroId, payload: HeroPayload): Hero | undefined {
+    if (!this.heroes().some((hero) => hero.id === id)) {
+      return undefined;
+    }
+    const updated: Hero = { ...payload, id, name: payload.name.toUpperCase() };
+    this.heroes.update((heroes) => heroes.map((hero) => (hero.id === id ? updated : hero)));
+    return { ...updated };
+  }
 }

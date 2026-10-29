@@ -1,3 +1,7 @@
 <app-hero-search (termChange)="searchTerm.set($event)" />
 <button mat-flat-button type="button" (click)="openCreateDialog()">Nuevo héroe</button>
-<app-hero-table [heroes]="heroes.value()" (remove)="openDeleteDialog($event)" />
+<app-hero-table
+  [heroes]="heroes.value()"
+  (edit)="openEditDialog($event)"
+  (remove)="openDeleteDialog($event)"
+/>
