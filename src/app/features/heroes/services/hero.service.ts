@@ -25,4 +25,8 @@ export class HeroService {
   create(payload: HeroPayload): Observable<Hero> {
     return this.http.post<Hero>(HEROES_API_URL, payload);
   }
+
+  delete(id: HeroId): Observable<void> {
+    return this.http.delete<void>(`${HEROES_API_URL}/${id}`);
+  }
 }

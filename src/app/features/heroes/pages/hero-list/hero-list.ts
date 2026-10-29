@@ -4,10 +4,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { catchError, filter, map, of, switchMap } from 'rxjs';
 
+import { HeroDeleteDialog } from '../../components/hero-delete-dialog/hero-delete-dialog';
 import { HeroFormDialog } from '../../components/hero-form-dialog/hero-form-dialog';
 import { HeroSearch } from '../../components/hero-search/hero-search';
 import { HeroTable } from '../../components/hero-table/hero-table';
-import { HeroPayload } from '../../models/hero.model';
+import { Hero, HeroPayload } from '../../models/hero.model';
 import { HeroService } from '../../services/hero.service';
 
 @Component({
@@ -39,6 +40,17 @@ export class HeroListPage {
       .pipe(
         filter((payload): payload is HeroPayload => payload !== undefined),
         switchMap((payload) => this.heroService.create(payload)),
+      )
+      .subscribe(() => this.heroes.reload());
+  }
+
+  protected openDeleteDialog(hero: Hero): void {
+    this.dialog
+      .open<HeroDeleteDialog, Hero, boolean>(HeroDeleteDialog, { data: hero })
+      .afterClosed()
+      .pipe(
+        filter((confirmed) => confirmed === true),
+        switchMap(() => this.heroService.delete(hero.id)),
       )
       .subscribe(() => this.heroes.reload());
   }

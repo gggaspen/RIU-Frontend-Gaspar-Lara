@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>Eliminar héroe</h2>
+<mat-dialog-content>
+  Está seguro que se desea borrar a <strong>{{ hero.name }}</strong>?
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button type="button" mat-dialog-close>Cancelar</button>
+  <button mat-flat-button type="button" [mat-dialog-close]="true">Eliminar</button>
+</mat-dialog-actions>

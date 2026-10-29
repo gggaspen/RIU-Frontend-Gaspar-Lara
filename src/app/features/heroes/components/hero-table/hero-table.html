@@ -32,7 +32,7 @@
       <button mat-icon-button type="button" aria-label="Editar héroe">
         <mat-icon fontSet="material-symbols-outlined">edit</mat-icon>
       </button>
-      <button mat-icon-button type="button" aria-label="Eliminar héroe">
+      <button mat-icon-button type="button" aria-label="Eliminar héroe" (click)="remove.emit(hero)">
         <mat-icon fontSet="material-symbols-outlined">delete</mat-icon>
       </button>
     </td>

@@ -34,4 +34,12 @@ export class HeroInMemoryDb {
     this.heroes.update((heroes) => [...heroes, hero]);
     return { ...hero };
   }
+
+  remove(id: HeroId): boolean {
+    if (!this.heroes().some((hero) => hero.id === id)) {
+      return false;
+    }
+    this.heroes.update((heroes) => heroes.filter((hero) => hero.id !== id));
+    return true;
+  }
 }

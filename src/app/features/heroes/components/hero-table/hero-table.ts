@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
@@ -12,5 +12,6 @@ import { Hero } from '../../models/hero.model';
 })
 export class HeroTable {
   readonly heroes = input.required<Hero[]>();
+  readonly remove = output<Hero>();
   protected readonly displayedColumns = ['image', 'name', 'fullName', 'publisher', 'actions'];
 }
