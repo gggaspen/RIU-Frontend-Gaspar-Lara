@@ -1,15 +1,22 @@
-<app-hero-search (termChange)="searchTerm.set($event)" />
-<button mat-flat-button type="button" (click)="openCreateDialog()">Nuevo héroe</button>
-<app-hero-table
-  [heroes]="pagedHeroes()"
-  (edit)="openEditDialog($event)"
-  (remove)="openDeleteDialog($event)"
-/>
-<mat-paginator
-  [length]="heroes.value().length"
-  [pageSize]="pageSize"
-  [pageIndex]="pageIndex()"
-  hidePageSize
-  showFirstLastButtons
-  (page)="pageIndex.set($event.pageIndex)"
-/>
+<mat-card>
+  <mat-card-content>
+    <div class="flex">
+      <app-hero-search (termChange)="searchTerm.set($event)" />
+      <button mat-flat-button type="button" (click)="openCreateDialog()">Nuevo héroe</button>
+    </div>
+
+    <app-hero-table
+      [heroes]="pagedHeroes()"
+      (edit)="openEditDialog($event)"
+      (remove)="openDeleteDialog($event)"
+    />
+    <mat-paginator
+      [length]="heroes.value().length"
+      [pageSize]="pageSize"
+      [pageIndex]="pageIndex()"
+      hidePageSize
+      showFirstLastButtons
+      (page)="pageIndex.set($event.pageIndex)"
+    />
+  </mat-card-content>
+</mat-card>

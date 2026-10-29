@@ -1,6 +1,7 @@
 import { Component, computed, inject, linkedSignal, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { catchError, filter, map, of, switchMap } from 'rxjs';
@@ -12,12 +13,13 @@ import { HeroTable } from '../../components/hero-table/hero-table';
 import { Hero, HeroPayload } from '../../models/hero.model';
 import { HeroService } from '../../services/hero.service';
 
-export const HEROES_PAGE_SIZE = 20;
+export const HEROES_PAGE_SIZE = 10;
 
 @Component({
-  imports: [MatButtonModule, MatPaginatorModule, HeroSearch, HeroTable],
+  imports: [MatButtonModule, MatCardModule, MatPaginatorModule, HeroSearch, HeroTable],
   selector: 'app-hero-list',
   templateUrl: './hero-list.html',
+  styleUrl: './hero-list.css',
 })
 export class HeroListPage {
   private readonly heroService = inject(HeroService);
