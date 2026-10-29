@@ -30,7 +30,7 @@ export class HeroInMemoryDb {
   }
 
   insert(payload: HeroPayload): Hero {
-    const hero: Hero = { ...payload, id: this.nextId++, name: payload.name.toUpperCase() };
+    const hero: Hero = { ...payload, id: this.nextId++ };
     this.heroes.update((heroes) => [...heroes, hero]);
     return { ...hero };
   }
@@ -47,7 +47,7 @@ export class HeroInMemoryDb {
     if (!this.heroes().some((hero) => hero.id === id)) {
       return undefined;
     }
-    const updated: Hero = { ...payload, id, name: payload.name.toUpperCase() };
+    const updated: Hero = { ...payload, id };
     this.heroes.update((heroes) => heroes.map((hero) => (hero.id === id ? updated : hero)));
     return { ...updated };
   }

@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
+import { UppercaseDirective } from '../../../../shared/directives/uppercase.directive';
 import { Hero, HeroPayload } from '../../models/hero.model';
 
 interface HeroFormValue {
@@ -69,6 +70,7 @@ const toHeroPayload = (
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    UppercaseDirective,
   ],
   selector: 'app-hero-form-dialog',
   styleUrl: './hero-form-dialog.scss',
