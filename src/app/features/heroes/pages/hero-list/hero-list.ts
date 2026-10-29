@@ -1,7 +1,8 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, linkedSignal, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { catchError, filter, map, of, switchMap } from 'rxjs';
 
 import { HeroDeleteDialog } from '../../components/hero-delete-dialog/hero-delete-dialog';
@@ -11,8 +12,10 @@ import { HeroTable } from '../../components/hero-table/hero-table';
 import { Hero, HeroPayload } from '../../models/hero.model';
 import { HeroService } from '../../services/hero.service';
 
+export const HEROES_PAGE_SIZE = 20;
+
 @Component({
-  imports: [MatButtonModule, HeroSearch, HeroTable],
+  imports: [MatButtonModule, MatPaginatorModule, HeroSearch, HeroTable],
   selector: 'app-hero-list',
   templateUrl: './hero-list.html',
 })
@@ -20,6 +23,7 @@ export class HeroListPage {
   private readonly heroService = inject(HeroService);
   private readonly dialog = inject(MatDialog);
 
+  protected readonly pageSize = HEROES_PAGE_SIZE;
   protected readonly searchTerm = signal('');
   protected readonly heroes = rxResource({
     params: () => this.searchTerm(),
@@ -31,6 +35,12 @@ export class HeroListPage {
           )
         : this.heroService.getByName(term),
     defaultValue: [],
+  });
+
+  protected readonly pageIndex = linkedSignal({ source: this.searchTerm, computation: () => 0 });
+  protected readonly pagedHeroes = computed(() => {
+    const start = this.pageIndex() * this.pageSize;
+    return this.heroes.value().slice(start, start + this.pageSize);
   });
 
   protected openCreateDialog(): void {

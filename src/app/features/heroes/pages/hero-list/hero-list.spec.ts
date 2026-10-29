@@ -5,7 +5,7 @@ import { of } from 'rxjs';
 
 import { heroApiInterceptor } from '../../data/hero-api.interceptor';
 import { HEROES_SEED } from '../../data/heroes.seed';
-import { HeroListPage } from './hero-list';
+import { HEROES_PAGE_SIZE, HeroListPage } from './hero-list';
 
 describe('HeroListPage', () => {
   const open = vi.fn();
@@ -33,16 +33,17 @@ describe('HeroListPage', () => {
     el = fixture.nativeElement;
   });
 
-  it('lista los héroes del seed', () => {
-    expect(rows()).toHaveLength(HEROES_SEED.length);
+  it('lista la primera pagina de héroes del seed', () => {
+    expect(rows()).toHaveLength(HEROES_PAGE_SIZE);
   });
 
   it('crea un héroe', async () => {
     closeWith({ ...hero, name: 'NUEVO HEROE' });
 
     await click('button');
+    await click('.mat-mdc-paginator-navigation-last');
 
-    expect(rows()).toHaveLength(HEROES_SEED.length + 1);
+    expect(rows()).toHaveLength((HEROES_SEED.length % HEROES_PAGE_SIZE) + 1);
     expect(el.querySelector('tbody')?.textContent).toContain('NUEVO HEROE');
   });
 
@@ -52,7 +53,7 @@ describe('HeroListPage', () => {
     await click('button[aria-label="Editar héroe"]');
 
     expect(open.mock.calls[0][1]).toEqual({ data: expect.objectContaining({ id: hero.id }) });
-    expect(rows()).toHaveLength(HEROES_SEED.length);
+    expect(rows()).toHaveLength(HEROES_PAGE_SIZE);
     expect(el.querySelector('tbody')?.textContent).toContain('EDITADO');
   });
 
@@ -62,6 +63,6 @@ describe('HeroListPage', () => {
     await click('button[aria-label="Eliminar héroe"]');
 
     expect(open.mock.calls[0][1]).toEqual({ data: expect.objectContaining({ id: hero.id }) });
-    expect(rows()).toHaveLength(HEROES_SEED.length - 1);
+    expect(el.querySelector('tbody')?.textContent).not.toContain(hero.name);
   });
 });
